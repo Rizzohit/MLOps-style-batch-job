@@ -1,0 +1,6 @@
+{
+  "name": "MLOps-style batch job",
+  "description": "A minimal MLOps-style batch job in Python for trade-signal pipelines, including data processing, metrics generation, and Dockerization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

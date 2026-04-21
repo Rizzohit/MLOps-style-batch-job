@@ -1,11 +1,60 @@
-<div align="center">
+# MLOps-style batch job
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+Technical assessment for building a minimal MLOps-style batch job that demonstrates reproducibility, observability, and deployment readiness.
 
-  <h1>Built with AI Studio</h2>
+## Project Structure
+```text
+.
+├── Dockerfile          # Container definition
+├── README.md           # Documentation
+├── config.yaml         # Job configuration
+├── data.csv            # Input dataset (OHLCV)
+├── metrics.json        # Output machine-readable metrics
+├── requirements.txt    # Python dependencies
+├── run.log             # Execution logs
+└── run.py              # Main processing script
+```
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## Setup and Installation
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+### Local Environment
+1. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-</div>
+2. **Execute the job**:
+   ```bash
+   python run.py --input data.csv --config config.yaml --output metrics.json --log-file run.log
+   ```
+
+### Docker
+1. **Build the image**:
+   ```bash
+   docker build -t mlops-task .
+   ```
+
+2. **Run the container**:
+   ```bash
+   docker run --rm mlops-task
+   ```
+
+## Requirements Adherence
+- **Python 3.9+**: Uses `python:3.9-slim` base image.
+- **Reproducibility**: Pinned seed (42) and window (5) in `config.yaml`.
+- **Determinism**: numpy random seed is set at runtime.
+- **Observability**: Dual output to `metrics.json` (machine-readable) and `run.log` (human-readable).
+- **Graceful Error Handling**: `metrics.json` is written in both success and error states.
+
+## Example metrics.json
+```json
+{
+  "version": "v1",
+  "rows_processed": 10000,
+  "metric": "signal_rate",
+  "value": 0.4990,
+  "latency_ms": 127,
+  "seed": 42,
+  "status": "success"
+}
+```
